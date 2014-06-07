@@ -24,30 +24,6 @@ public class JavaApplication20 {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-//        Process pr = Runtime.getRuntime().exec("cmd");
-//        Process pCat = Runtime.getRuntime().exec(cmd);
-//        InputStream inCmd = pCat.getInputStream();
-//        InputStream errCmd = pCat.getErrorStream();
-//
-//        Process pr = Runtime.getRuntime().exec("cmd /c start cmd.exe /K cd \"c:\\prb");
-//        String cmd = "cmd";
-//        Process p = Runtime.getRuntime().exec(cmd);
-//        InputStream inCmd = p.getInputStream();
-//        InputStream errCmd = p.getErrorStream();
-//        
-//        BufferedReader outReader = new BufferedReader(new InputStreamReader(inCmd, "Cp866"));
-//        String line;
-//        while ((line = outReader.readLine()) != null) { //считываем поток выхода
-//            System.out.println(line);
-//        }
-//        outReader.close();
-//        BufferedReader errReader = new BufferedReader(new InputStreamReader(errCmd, "Cp866"));
-//        while ((line = errReader.readLine()) != null) { //считываем поток ошибок
-//            System.out.println("[Stderr] " + line);
-//        }
-//        errReader.close();
-//        inCmd.close();
-//        errCmd.close();
 
         try {
             String line;
