@@ -1,6 +1,8 @@
 package pete.users;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Enumeration;
@@ -102,6 +104,5 @@ public class usersServlet extends HttpServlet {
                 registerProcessor(request, response, out);
             }
         }
-
     }
 }

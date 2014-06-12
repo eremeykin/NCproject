@@ -14,13 +14,16 @@
     </head>
     <body>
         <h1>Hello, 
-        <%             
-        HttpSession hs = request.getSession(true);
-        out.println(hs.getAttribute("Login"));
-        %>
-        !</h1>
+            <%
+                HttpSession hs = request.getSession(true);
+                out.println(hs.getAttribute("Login"));
+            %>
+            !</h1>
         <form action="Logout.jsp">
             <input type="submit" value="Logout" name="Logout_button" />
+        </form>
+        <form action="ansStart">
+            <input type="submit" value="Ansys Start" name="ansStart_button" />
         </form>
     </body>
 </html>

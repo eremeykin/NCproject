@@ -4,13 +4,21 @@
         <servlet-name>usersServlet</servlet-name>
         <servlet-class>pete.users.usersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ansStart</servlet-name>
+        <servlet-class>pete.users.ansStart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>usersServlet</servlet-name>
         <url-pattern>/usersServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ansStart</servlet-name>
+        <url-pattern>/ansStart</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            1
         </session-timeout>
     </session-config>
     <welcome-file-list>
