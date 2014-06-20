@@ -44,7 +44,7 @@ public class JavaApplication20 {
         executor.execute(cmdLine, resultHandler);
         
         Thread inThread = new Thread(new Runnable() {
-
+        
             @Override
             public void run() {
                 while (true) {
