@@ -5,14 +5,11 @@
  */
 package javaapplication20;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.exec.*;
+import java.io.*;
+import java.util.*;
+import org.apache.commons.exec.DefaultExecutor;
+import com.mangofactory.typescript.tss.io.*;
 
 /**
  *
@@ -23,58 +20,155 @@ public class JavaApplication20 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-//        Process pr = Runtime.getRuntime().exec("cmd");
-//        Process pCat = Runtime.getRuntime().exec(cmd);
-//        InputStream inCmd = pCat.getInputStream();
-//        InputStream errCmd = pCat.getErrorStream();
+    @SuppressWarnings("WaitWhileNotSynced")
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Scanner scan = new Scanner(System.in);
+
+        DefaultExecutor executor = new DefaultExecutor();
+        CommandLine cmdLine = new CommandLine("calc.exe");
+
+        PipedOutputStream stdout = new PipedOutputStream();
+        PipedOutputStream stderr = new PipedOutputStream();
+        PipedInputStream stdin = new PipedInputStream();
+
+        AutoFlushingPumpStreamHandler streamHandler = new AutoFlushingPumpStreamHandler(stdout, stderr, stdin);
+
+        executor.setStreamHandler(streamHandler);
+
+        BufferedInputStream processOutput = new BufferedInputStream(new PipedInputStream(stdout));
+        BufferedInputStream processError = new BufferedInputStream(new PipedInputStream(stderr));
+        BufferedOutputStream processInput = new BufferedOutputStream(new PipedOutputStream(stdin));
+
+        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+
+        executor.execute(cmdLine, resultHandler);
+        
+        Thread inThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        String input = scan.nextLine();
+                        input += "\n";
+                        processInput.write(input.getBytes());
+                        processInput.flush();
+                        //processInput.close();
+                    } catch (Exception ex) {
+
+                    }
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        Thread outThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        System.out.print(Character.toChars(processOutput.read()));
+                        //System.out.println(br.readLine());
+                    } catch (IOException ex) {
+
+                    }
+                }
+                //Thread.currentThread().interrupt();
+            }
+        });
+        Thread errThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        System.out.print(Character.toChars(processError.read()));
+                    } catch (IOException ex) {
+
+                    }
+                }
+                //Thread.currentThread().interrupt();
+            }
+        });
+        inThread.start();
+        outThread.start();
+        errThread.start();
+
+//        Scanner scan = new Scanner(System.in);
+//        ProcessBuilder pb = new ProcessBuilder("C:\\ANSYS_call.bat");
+//        //pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File("C:\\input.txt")));
+//        Process process = pb.start();
+//        //Process process = Runtime.getRuntime().exec("C:\\Ansys_call.bat");
+//        //Thread.sleep(10000);
+//        OutputStream stdin = process.getOutputStream();
+//        InputStream stderr = process.getErrorStream();
+//        InputStream stdout = process.getInputStream();
+//        BufferedReader out_reader = new BufferedReader(new InputStreamReader(stdout, "Cp866"));
+//        BufferedReader err_reader = new BufferedReader(new InputStreamReader(stderr, "Cp866"));
+//        OutputStreamWriter OSW = new OutputStreamWriter(stdin, "Cp866");
+//        BufferedWriter writer = new BufferedWriter(OSW);
+//        Thread inThread = new Thread(new Runnable() {
 //
-//        Process pr = Runtime.getRuntime().exec("cmd /c start cmd.exe /K cd \"c:\\prb");
-//        String cmd = "cmd";
-//        Process p = Runtime.getRuntime().exec(cmd);
-//        InputStream inCmd = p.getInputStream();
-//        InputStream errCmd = p.getErrorStream();
-//        
-//        BufferedReader outReader = new BufferedReader(new InputStreamReader(inCmd, "Cp866"));
-//        String line;
-//        while ((line = outReader.readLine()) != null) { //считываем поток выхода
-//            System.out.println(line);
-//        }
-//        outReader.close();
-//        BufferedReader errReader = new BufferedReader(new InputStreamReader(errCmd, "Cp866"));
-//        while ((line = errReader.readLine()) != null) { //считываем поток ошибок
-//            System.out.println("[Stderr] " + line);
-//        }
-//        errReader.close();
-//        inCmd.close();
-//        errCmd.close();
-
-        try {
-            String line;
-            String com1 = "y\n";
-            String com2 = "exit";
-            Process p = Runtime.getRuntime().exec("cmd /K C:\\ANSYS_call.bat");
-            BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream(), "Cp866"));
-            BufferedReader bre = new BufferedReader(new InputStreamReader(p.getErrorStream(), "Cp866"));
-            while ((line = bri.readLine()) != null) {
-                System.out.println(line);
-                if (line.equals(" Do you wish to override this lock and continue (y or n)?")) {
-                    p.getOutputStream().write(com1.getBytes(), 0, 2);
-                }
-                if (line.equals(" BEGIN:")) {
-                    p.getOutputStream().write(com2.getBytes(), 0, 2);
-                }
-            }
-            bri.close();
-            while ((line = bre.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            bre.close();
-            p.waitFor();
-            System.out.println("Done.");
-        } catch (Exception err) {
-        }
-
+//            @Override
+//            public void run() {
+//                while (process.isAlive()) {
+//                    BufferedWriter writer = null;
+//                    try {
+//                        OutputStream stdin = process.getOutputStream();
+//                        writer = new BufferedWriter(new OutputStreamWriter(stdin, "Cp866"));
+//                        String input = scan.nextLine();
+//                        input += "\n";
+//                        try {
+//                            //writer.write(input);
+//                            //writer.flush();
+//                            //OSW.flush();
+//                            stdin.write(input.getBytes());
+//                            stdin.flush();
+//                        } catch (IOException e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+//                    } catch (UnsupportedEncodingException ex) {
+//                        Logger.getLogger(JavaApplication20.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    //stdin.close();
+//                    Thread.currentThread().interrupt();
+//                }
+//            }
+//        });
+//        Thread outThread = new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                while (process.isAlive()) {
+//                    try {
+//                        System.out.println(out_reader.readLine());
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(JavaApplication20.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                Thread.currentThread().interrupt();
+//            }
+//        });
+//        Thread errThread = new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                while (process.isAlive()) {
+//                    try {
+//                        System.out.println(err_reader.readLine());
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(JavaApplication20.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                Thread.currentThread().interrupt();
+//            }
+//        });
+//
+//        inThread.start();
+//
+//        outThread.start();
+//
+//        errThread.start();
     }
 }
