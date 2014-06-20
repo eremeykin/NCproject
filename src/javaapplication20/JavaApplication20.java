@@ -25,7 +25,7 @@ public class JavaApplication20 {
         Scanner scan = new Scanner(System.in);
 
         DefaultExecutor executor = new DefaultExecutor();
-        CommandLine cmdLine = new CommandLine("cmd");
+        CommandLine cmdLine = new CommandLine("C:\\ANSYS_call.bat");
 
         PipedOutputStream stdout = new PipedOutputStream();
         PipedOutputStream stderr = new PipedOutputStream();
