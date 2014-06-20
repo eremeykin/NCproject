@@ -25,7 +25,7 @@ public class JavaApplication20 {
         Scanner scan = new Scanner(System.in);
 
         DefaultExecutor executor = new DefaultExecutor();
-        CommandLine cmdLine = new CommandLine("calc.exe");
+        CommandLine cmdLine = new CommandLine("cmd");
 
         PipedOutputStream stdout = new PipedOutputStream();
         PipedOutputStream stderr = new PipedOutputStream();
