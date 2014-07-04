@@ -22,8 +22,5 @@
         <form action="Logout.jsp">
             <input type="submit" value="Logout" name="Logout_button" />
         </form>
-        <form action="ansStart">
-            <input type="submit" value="Ansys Start" name="ansStart_button" />
-        </form>
     </body>
 </html>

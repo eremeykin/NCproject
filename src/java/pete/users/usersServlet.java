@@ -81,7 +81,7 @@ public class usersServlet extends HttpServlet {
                 }
             }
             msStatement.executeUpdate("INSERT INTO login_password (login,password) VALUES (" + "\"" + login + "\",\"" + password + "\"" + ")");
-            response.sendRedirect("REGsuccessed.jsp");
+            response.sendRedirect("RegSuccessed.jsp");
         } catch (SQLException | IOException ex) {
             out.println(ex);
         }
